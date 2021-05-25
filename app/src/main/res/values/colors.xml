@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/yellow_sunflower</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="asphalt">#34495e</color>
+
+    <color name="grey_cloud">#ecf0f1</color>
+
+    <color name="yellow_sunflower">#f1c40f</color>
+    <color name="primaryTransparent">#2FF1C40F</color>
+    <color name="greyShimmer">#9A9A9A</color>
+    <color name="shimmerTile">#8E8E8E</color>
+
+    <color name="blackColor">#000</color>
+    <color name="whiteColor">#fff</color>
+    <color name="blackBackground">#121212</color>
+    <color name="transparent">#00FFFFFF</color>
+
+</resources>
