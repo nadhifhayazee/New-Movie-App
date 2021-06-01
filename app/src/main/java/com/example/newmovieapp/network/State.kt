@@ -1,6 +1,6 @@
 package com.example.newmovieapp.network
 
-class State<out T> (
+class State<out T>(
     val requestStatus: RequestStatus,
     val data: T?,
     val message: String?

@@ -1,36 +1,22 @@
 package com.example.newmovieapp.detail_item
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.newmovieapp.di.RepositoryProvider
+import com.example.newmovieapp.detail_item.repository.DetailRepository
 import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.State
-import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DetailViewModel : ViewModel() {
-
-    private val _detailMovie = MutableLiveData<State<Movie>>()
-    private val _detailTv = MutableLiveData<State<Movie>>()
-
-    val detailMovie get() = _detailMovie
-    val detailTv get() = _detailTv
-
+@HiltViewModel
+class DetailViewModel @Inject constructor(private val remoteDetailRepository: DetailRepository) :
+    ViewModel() {
 
     fun getDetailMovie(
         movieId: String,
         language: String = "id-ID"
-    ) {
-        _detailMovie.value = State.loading()
-        viewModelScope.launch {
-            _detailMovie.value = RepositoryProvider.detailRepository?.getDetailMovie(movieId, language)
-        }
-    }
+    ): LiveData<State<Movie>> = remoteDetailRepository.getDetailMovie(movieId, language)
 
-    fun getDetailTv(tvId: String, language: String = "id-ID") {
-        _detailTv.value = State.loading()
-        viewModelScope.launch {
-            _detailTv.value = RepositoryProvider.detailRepository?.getDetailTv(tvId, language)
-        }
-    }
+    fun getDetailTv(tvId: String, language: String = "id-ID"): LiveData<State<Movie>> =
+        remoteDetailRepository.getDetailTv(tvId, language)
 }

@@ -6,8 +6,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_movie"
         android:title="@string/movie"
-        app:showAsAction="ifRoom"
-        />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/tvFragment"

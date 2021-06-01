@@ -17,7 +17,7 @@
         android:paddingBottom="24dp">
 
         <ImageView
-            android:id="@+id/ivBackdrop"
+            android:id="@+id/ivBackdropDetail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_140sdp"
             android:contentDescription="@string/backdrop"
@@ -36,10 +36,10 @@
             android:elevation="4dp"
             app:cardCornerRadius="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ivBackdrop">
+            app:layout_constraintTop_toTopOf="@id/ivBackdropDetail">
 
             <ImageView
-                android:id="@+id/ivPoster"
+                android:id="@+id/ivPosterDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster" />
@@ -47,7 +47,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvTitleDetail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_12sdp"
@@ -71,9 +71,9 @@
             android:maxLines="2"
             android:textColor="@color/whiteColor"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="@id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitleDetail"
+            app:layout_constraintStart_toStartOf="@id/tvTitleDetail"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleDetail"
             tools:text="Aksi, Komedi, Aksi, Komedi" />
 
         <ImageView
@@ -85,7 +85,7 @@
             android:src="@drawable/ic_clock"
             app:layout_constraintBottom_toBottomOf="@id/tvRuntime"
             app:layout_constraintEnd_toStartOf="@id/tvRuntime"
-            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="@id/tvTitleDetail"
             app:layout_constraintTop_toTopOf="@id/tvRuntime" />
 
         <TextView
@@ -122,7 +122,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/cvPoster"
-            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitleDetail"
             app:layout_constraintTop_toBottomOf="@+id/tvGenres"
             tools:text="7.9" />
 
@@ -136,7 +136,7 @@
             android:textColor="@color/whiteColor"
             android:textSize="@dimen/_16ssp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitleDetail"
             app:layout_constraintStart_toStartOf="@id/cvPoster"
             app:layout_constraintTop_toBottomOf="@id/cvPoster" />
 

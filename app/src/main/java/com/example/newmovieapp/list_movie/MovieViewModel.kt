@@ -1,46 +1,26 @@
 package com.example.newmovieapp.list_movie
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.newmovieapp.di.RepositoryProvider
-import com.example.newmovieapp.model.MovieResponse
+import com.example.newmovieapp.list_movie.repository.MovieRepository
+import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.State
-import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MovieViewModel : ViewModel() {
+@HiltViewModel
+class MovieViewModel @Inject constructor(private val remoteMovieRepository: MovieRepository) :
+    ViewModel() {
 
-    private val _nowPlayingMovies = MutableLiveData<State<MovieResponse>>()
-    private val _popularMovies = MutableLiveData<State<MovieResponse>>()
 
-
-    val nowPlayingMovies get() = _nowPlayingMovies
-    val popularMovies get() = _popularMovies
-
-    init {
-        requestNowPlayingMovies()
-        requestPopularMovies()
-    }
-
-    private fun requestNowPlayingMovies(
+    fun getNowPlayingMovies(
         language: String = "id-ID",
         page: Int = 1
-    ) {
-        _nowPlayingMovies.value = State.loading()
-        viewModelScope.launch {
-            _nowPlayingMovies.value = RepositoryProvider.movieRepository?.getNowPlayingMovies(language, page)
-        }
-    }
+    ): LiveData<State<ArrayList<Movie>>> = remoteMovieRepository.getNowPlayingMovies(language, page)
 
-
-    private fun requestPopularMovies(
+    fun getPopularMovies(
         language: String = "id-ID"
-    ) {
-        _popularMovies.value = State.loading()
-        viewModelScope.launch {
-            _popularMovies.value = RepositoryProvider.movieRepository?.getPopularMovies(language)
-        }
-    }
+    ): LiveData<State<ArrayList<Movie>>> = remoteMovieRepository.getPopularMovies(language)
 
 
 }

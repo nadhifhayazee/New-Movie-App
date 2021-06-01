@@ -9,7 +9,9 @@ import com.example.newmovieapp.databinding.ActivityMainBinding
 import com.example.newmovieapp.util.gone
 import com.example.newmovieapp.util.makeStatusBarTransparent
 import com.example.newmovieapp.util.visible
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 

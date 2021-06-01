@@ -1,35 +1,23 @@
 package com.example.newmovieapp.list_tv
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.newmovieapp.di.RepositoryProvider
-import com.example.newmovieapp.model.MovieResponse
+import com.example.newmovieapp.list_tv.repository.TvRepository
+import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.State
-import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TvViewModel : ViewModel() {
+@HiltViewModel
+class TvViewModel @Inject constructor(private val remoteTvRepository: TvRepository) : ViewModel() {
 
-    private val _popularTv = MutableLiveData<State<MovieResponse>>()
-    private val _nowPlayingTv = MutableLiveData<State<MovieResponse>>()
+    fun getNowPlayingTvs(
+        language: String = "id-ID"
+    ): LiveData<State<ArrayList<Movie>>> = remoteTvRepository.getNowPlayingTv(language)
 
-
-    val popularTv get() = _popularTv
-    val nowPlayingTv get() = _nowPlayingTv
-
-    fun requestPopularTv(language: String = "id-ID") {
-        _popularTv.value = State.loading()
-        viewModelScope.launch {
-            _popularTv.value = RepositoryProvider.tvRepository?.getPopularTv(language)
-        }
-    }
-
-    fun requestNowPlayingTv(language: String = "id-ID") {
-        _nowPlayingTv.value = State.loading()
-        viewModelScope.launch {
-            _nowPlayingTv.value = RepositoryProvider.tvRepository?.getNowPlayingTv(language)
-        }
-    }
+    fun getPopularTvs(
+        language: String = "id-ID"
+    ): LiveData<State<ArrayList<Movie>>> = remoteTvRepository.getPopularTv(language)
 
 
 }

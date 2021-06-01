@@ -2,9 +2,6 @@
     <string name="app_name">New Movie App</string>
     <string name="movie">Film</string>
     <string name="tv_show">TV</string>
-    <string name="favorite">Favorite</string>
-    <string name="now_trending">Sedang Trending</string>
-    <string name="now_playing">Sedang Tayang</string>
     <string name="movie_for_you">Film Untuk Kamu</string>
     <string name="tv_for_you">Serial TV Untuk Kamu</string>
 
@@ -14,9 +11,7 @@
     <string name="poster">Poster</string>
     <string name="rating">Rating</string>
     <string name="runtime">Runtime</string>
-    <string name="minute"> Menit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search">Cari</string>
+    <string name="movie_runtime">%s Menit</string>
+
 
 </resources>

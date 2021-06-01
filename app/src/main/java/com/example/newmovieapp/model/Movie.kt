@@ -1,8 +1,5 @@
 package com.example.newmovieapp.model
 
-import android.content.res.Resources
-import com.example.newmovieapp.R
-
 data class Movie(
     var id: Int = 0,
     var original_title: String? = null,
@@ -36,10 +33,4 @@ data class Movie(
         return "-"
     }
 
-
-    fun getRuntime(isMovie: Boolean, resources: Resources): String {
-        return if (isMovie) if (runtime != 0) runtime.toString() + " " + resources.getString(R.string.minute) else "-"
-        else if (episode_run_time?.getOrNull(0) != 0) episode_run_time?.getOrNull(0)
-            .toString() + " " + resources.getString(R.string.minute) else "-"
-    }
 }

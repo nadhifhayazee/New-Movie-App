@@ -9,14 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.newmovieapp.R
 import com.example.newmovieapp.activity.MainActivity
 import com.example.newmovieapp.adapter.MovieAdapter
 import com.example.newmovieapp.adapter.MovieCarouselAdapter
-import com.example.newmovieapp.adapter.MovieType
 import com.example.newmovieapp.databinding.FragmentMovieBinding
 import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.RequestStatus
@@ -24,17 +23,15 @@ import com.example.newmovieapp.static.Const
 import com.example.newmovieapp.util.gone
 import com.example.newmovieapp.util.visible
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
+@AndroidEntryPoint
 class TvFragment : Fragment(), MovieAdapter.OnItemClickListener {
 
     private lateinit var binding: FragmentMovieBinding
-    private val tvViewModel by navGraphViewModels<TvViewModel>(R.id.main_navigation)
-
-    private lateinit var carouselAdapter: MovieCarouselAdapter
-
-    private val popularAdapter = MovieAdapter(MovieType.POPULAR)
+    private val tvViewModel by viewModels<TvViewModel>()
 
     private var carouselPosition = 1
 
@@ -51,25 +48,27 @@ class TvFragment : Fragment(), MovieAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tvViewModel.requestPopularTv()
-        tvViewModel.requestNowPlayingTv()
+
         setupView()
         initObserver()
     }
 
     private fun initObserver() {
-        tvViewModel.popularTv.observe(viewLifecycleOwner, {
+        tvViewModel.getPopularTvs().observe(viewLifecycleOwner, {
             when (it.requestStatus) {
                 RequestStatus.LOADING -> {
                     binding.progressBar.visible()
                 }
                 RequestStatus.SUCCESS -> {
                     binding.progressBar.gone()
-                    it.data?.results?.let { list -> popularAdapter.setData(list) }
-                    popularAdapter.onItemClick = this
-                    binding.rvListMovie.layoutManager = GridLayoutManager(requireContext(), 2)
-                    binding.rvListMovie.adapter = popularAdapter
-                    binding.rvListMovie.visible()
+                    it.data?.let { list ->
+                        val popularAdapter = MovieAdapter(list)
+                        popularAdapter.onItemClick = this
+                        binding.rvListMovie.layoutManager = GridLayoutManager(requireContext(), 2)
+                        binding.rvListMovie.adapter = popularAdapter
+                        binding.rvListMovie.visible()
+                    }
+
                 }
                 RequestStatus.ERROR -> {
                     binding.progressBar.gone()
@@ -83,15 +82,15 @@ class TvFragment : Fragment(), MovieAdapter.OnItemClickListener {
             }
         })
 
-        tvViewModel.nowPlayingTv.observe(viewLifecycleOwner, { state ->
+        tvViewModel.getNowPlayingTvs().observe(viewLifecycleOwner, { state ->
             when (state.requestStatus) {
                 RequestStatus.LOADING -> {
                     binding.movieCarousel.gone()
                 }
                 RequestStatus.SUCCESS -> {
-                    state.data?.results?.let {
+                    state.data?.let {
                         binding.movieCarousel.visible()
-                        carouselAdapter = MovieCarouselAdapter()
+                        val carouselAdapter = MovieCarouselAdapter()
                         carouselAdapter.setData(it)
                         binding.movieCarousel.adapter = carouselAdapter
                         carouselPosition = binding.movieCarousel.viewPager2.currentItem

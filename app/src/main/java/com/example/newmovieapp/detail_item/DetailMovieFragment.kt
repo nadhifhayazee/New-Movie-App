@@ -19,7 +19,9 @@ import com.example.newmovieapp.network.RequestStatus
 import com.example.newmovieapp.static.Const
 import com.example.newmovieapp.util.gone
 import com.example.newmovieapp.util.visible
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailMovieFragment : Fragment() {
 
     private var mActivity: MainActivity? = null
@@ -54,42 +56,44 @@ class DetailMovieFragment : Fragment() {
     }
 
     private fun initObserver() {
-        if (isMovie) detailViewModel.getDetailMovie(movieId.toString())
-        else detailViewModel.getDetailTv(movieId.toString())
+        if (isMovie) {
+            detailViewModel.getDetailMovie(movieId.toString()).observe(viewLifecycleOwner, {
+                when (it.requestStatus) {
+                    RequestStatus.LOADING -> {
+                        binding.progressBar.visible()
+                    }
+                    RequestStatus.SUCCESS -> {
+                        binding.progressBar.gone()
+                        bindView(it.data)
+                    }
+                    RequestStatus.ERROR -> {
+                        binding.progressBar.gone()
 
-        detailViewModel.detailMovie.observe(viewLifecycleOwner, {
-            when (it.requestStatus) {
-                RequestStatus.LOADING -> {
-                    binding.progressBar.visible()
+                    }
                 }
-                RequestStatus.SUCCESS -> {
-                    binding.progressBar.gone()
-                    bindView(it.data)
-                }
-                RequestStatus.ERROR -> {
-                    binding.progressBar.gone()
 
-                }
-            }
+            })
 
-        })
+        } else {
+            detailViewModel.getDetailTv(movieId.toString()).observe(viewLifecycleOwner, {
+                when (it.requestStatus) {
+                    RequestStatus.LOADING -> {
+                        binding.progressBar.visible()
 
-        detailViewModel.detailTv.observe(viewLifecycleOwner, {
-            when (it.requestStatus) {
-                RequestStatus.LOADING -> {
-                    binding.progressBar.visible()
+                    }
+                    RequestStatus.SUCCESS -> {
+                        binding.progressBar.gone()
+                        bindView(it.data)
+                    }
+                    RequestStatus.ERROR -> {
+                        binding.progressBar.gone()
 
+                    }
                 }
-                RequestStatus.SUCCESS -> {
-                    binding.progressBar.gone()
-                    bindView(it.data)
-                }
-                RequestStatus.ERROR -> {
-                    binding.progressBar.gone()
+            })
+        }
 
-                }
-            }
-        })
+
     }
 
     private fun bindView(data: Movie?) {
@@ -98,17 +102,21 @@ class DetailMovieFragment : Fragment() {
                     .isNotEmpty()
             ) data?.vote_average.toString() else "-"
             val overview = if (data?.overview?.isNotEmpty() == true) data.overview else "-"
-            tvTitle.text = data?.title ?: data?.name
+            tvTitleDetail.text = data?.title ?: data?.name
             tvGenres.text = data?.getGenres()
-            tvRuntime.text = data?.getRuntime(isMovie, resources)
+            tvRuntime.text = getString(
+                R.string.movie_runtime,
+                if (isMovie) data?.runtime.toString() else data?.episode_run_time?.getOrNull(0)
+                    .toString()
+            )
             tvRating.text = rating
             tvOverview.text = overview
             Glide.with(requireContext())
                 .load(BuildConfig.BACKDROP_URL + data?.backdrop_path)
-                .into(ivBackdrop)
+                .into(ivBackdropDetail)
             Glide.with(requireContext())
                 .load(BuildConfig.IMAGE_URL + data?.poster_path)
-                .into(ivPoster)
+                .into(ivPosterDetail)
         }
 
     }
