@@ -19,7 +19,7 @@ class MovieCarouselAdapter : CarouselAdapter<MovieCarouselAdapter.ViewHolder>() 
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val binding: ItemCarouselLayoutBinding) :
+    inner class ViewHolder(private val binding: ItemCarouselLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie?) {
             Glide.with(binding.root)

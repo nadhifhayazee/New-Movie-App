@@ -15,11 +15,6 @@ interface ApiService {
     ): Response<MovieResponse>
 
 
-    @GET("trending/movie/day")
-    suspend fun getTrendingMovies(
-        @Query("api_key") api_key: String?, @Query("language") language: String?
-    ): Response<MovieResponse>
-
     @GET("movie/popular")
     suspend fun getPopularMovies(
         @Query("api_key") api_key: String?, @Query("language") language: String?

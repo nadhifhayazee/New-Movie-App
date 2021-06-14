@@ -12,6 +12,10 @@
     <string name="rating">Rating</string>
     <string name="runtime">Runtime</string>
     <string name="movie_runtime">%s Menit</string>
+    <string name="favorite">Favorit</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_data">Data Tidak Ditemukan</string>
+    <string name="splash_screen">Splash Screen</string>
 
 
 </resources>

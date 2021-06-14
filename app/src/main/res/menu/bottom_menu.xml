@@ -15,4 +15,11 @@
         android:title="@string/tv_show"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/favoriteFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favorite"
+        app:showAsAction="ifRoom"/>
+
 </menu>

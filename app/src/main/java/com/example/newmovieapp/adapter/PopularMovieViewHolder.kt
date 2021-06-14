@@ -16,7 +16,7 @@ class PopularMovieViewHolder(
             .load(BuildConfig.BACKDROP_URL + movie?.poster_path)
             .into(binding.ivBackdrop)
 
-        binding.tvTitle.text = movie?.title ?: movie?.name
+        binding.tvTitle.text = movie?.title ?: movie?.original_name
         binding.root.setOnClickListener {
             onItemClick?.onItemClick(movie, it)
         }

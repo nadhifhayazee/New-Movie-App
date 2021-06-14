@@ -23,6 +23,7 @@ import com.example.newmovieapp.static.Const.Companion.CAROUSEL_SIZE
 import com.example.newmovieapp.static.Const.Companion.IS_MOVIE
 import com.example.newmovieapp.static.Const.Companion.MOVIE_ID
 import com.example.newmovieapp.util.gone
+import com.example.newmovieapp.util.makeStatusBarTransparent
 import com.example.newmovieapp.util.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +63,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemClickListener {
 
 
     private fun setupView() {
+        activity?.makeStatusBarTransparent()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
                 if (scrollY <= 250) {

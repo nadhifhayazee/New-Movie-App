@@ -14,9 +14,14 @@ import com.example.newmovieapp.BuildConfig
 import com.example.newmovieapp.R
 import com.example.newmovieapp.activity.MainActivity
 import com.example.newmovieapp.databinding.FragmentDetailMovieBinding
+import com.example.newmovieapp.db.entity.MovieEntity
+import com.example.newmovieapp.db.entity.TvEntity
+import com.example.newmovieapp.favorite.FavoriteViewModel
+import com.example.newmovieapp.favorite.helper.InsertResponse
 import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.RequestStatus
 import com.example.newmovieapp.static.Const
+import com.example.newmovieapp.util.FavoriteMapper
 import com.example.newmovieapp.util.gone
 import com.example.newmovieapp.util.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +34,7 @@ class DetailMovieFragment : Fragment() {
     private var isMovie = true
     private var movieId = 0
     private val detailViewModel by viewModels<DetailViewModel>()
+    private val favoriteViewModel by viewModels<FavoriteViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +108,7 @@ class DetailMovieFragment : Fragment() {
                     .isNotEmpty()
             ) data?.vote_average.toString() else "-"
             val overview = if (data?.overview?.isNotEmpty() == true) data.overview else "-"
-            tvTitleDetail.text = data?.title ?: data?.name
+            tvTitleDetail.text = data?.title ?: data?.original_name
             tvGenres.text = data?.getGenres()
             tvRuntime.text = getString(
                 R.string.movie_runtime,
@@ -117,8 +123,73 @@ class DetailMovieFragment : Fragment() {
             Glide.with(requireContext())
                 .load(BuildConfig.IMAGE_URL + data?.poster_path)
                 .into(ivPosterDetail)
+
+            if (isMovie) {
+                checkIsFavoriteMovie(data?.id ?: 0)
+                ivFavorite.setOnClickListener {
+                    val movieEntity = MovieEntity()
+                    movieEntity.movie_id = data?.id ?: 0
+                    movieEntity.data = FavoriteMapper.movieToJson(data)
+                    insertMovie(movieEntity)
+                }
+            } else {
+                checkIsFavoriteTv(data?.id ?: 0)
+                ivFavorite.setOnClickListener {
+                    val tvEntity = TvEntity()
+                    tvEntity.tv_id = data?.id ?: 0
+                    tvEntity.data = FavoriteMapper.movieToJson(data)
+                    insertTv(tvEntity)
+                }
+            }
         }
 
+
+    }
+
+    private fun checkIsFavoriteTv(id: Int) {
+        favoriteViewModel.checkIsFavoriteTv(id).observe(viewLifecycleOwner, {
+            when (it.requestStatus) {
+                RequestStatus.SUCCESS -> {
+                    setViewIsFavorite(it.data == true)
+                }
+            }
+        })
+    }
+
+    private fun checkIsFavoriteMovie(id: Int) {
+        favoriteViewModel.checkIsFavoriteMovie(id).observe(viewLifecycleOwner, {
+            when (it.requestStatus) {
+                RequestStatus.SUCCESS -> {
+                    setViewIsFavorite(it.data == true)
+                }
+            }
+        })
+    }
+
+    private fun insertTv(tvEntity: TvEntity) {
+        favoriteViewModel.insertTv(tvEntity).observe(viewLifecycleOwner, {
+            when (it.requestStatus) {
+                RequestStatus.SUCCESS -> {
+                    setViewIsFavorite(it.data == InsertResponse.INSERTED)
+                }
+            }
+        })
+    }
+
+    private fun insertMovie(movieEntity: MovieEntity) {
+        favoriteViewModel.insertMovie(movieEntity).observe(viewLifecycleOwner, {
+            when (it.requestStatus) {
+                RequestStatus.SUCCESS -> {
+                    setViewIsFavorite(it.data == InsertResponse.INSERTED)
+                }
+            }
+
+        })
+    }
+
+    private fun setViewIsFavorite(isFavorite: Boolean) {
+        if (isFavorite) binding.ivFavorite.setBackgroundResource(R.drawable.ic_favorite_filled)
+        else binding.ivFavorite.setBackgroundResource(R.drawable.ic_favorite_border)
     }
 
     private fun setupView() {

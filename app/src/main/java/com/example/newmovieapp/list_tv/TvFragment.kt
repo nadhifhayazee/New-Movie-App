@@ -21,6 +21,7 @@ import com.example.newmovieapp.model.Movie
 import com.example.newmovieapp.network.RequestStatus
 import com.example.newmovieapp.static.Const
 import com.example.newmovieapp.util.gone
+import com.example.newmovieapp.util.makeStatusBarTransparent
 import com.example.newmovieapp.util.visible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -130,7 +131,9 @@ class TvFragment : Fragment(), MovieAdapter.OnItemClickListener {
         }, 3500, 3500)
     }
 
+
     private fun setupView() {
+        activity?.makeStatusBarTransparent()
         binding.tvForYou.text = getString(R.string.tv_for_you)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->

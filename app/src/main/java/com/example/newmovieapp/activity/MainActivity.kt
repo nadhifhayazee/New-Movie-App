@@ -7,7 +7,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.newmovieapp.R
 import com.example.newmovieapp.databinding.ActivityMainBinding
 import com.example.newmovieapp.util.gone
-import com.example.newmovieapp.util.makeStatusBarTransparent
 import com.example.newmovieapp.util.visible
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        makeStatusBarTransparent()
         binding.bottomNavView.setupWithNavController(findNavController(R.id.fragment))
     }
 

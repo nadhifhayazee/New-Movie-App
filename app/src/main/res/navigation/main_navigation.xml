@@ -32,11 +32,17 @@
         android:id="@+id/detailMovieFragment"
         android:name="com.example.newmovieapp.detail_item.DetailMovieFragment"
         tools:layout="@layout/fragment_detail_movie">
-        <action
-            android:id="@+id/action_detailMovieFragment_to_movieFragment"
-            app:destination="@id/movieFragment" />
-        <action
-            android:id="@+id/action_detailMovieFragment_to_tvFragment"
-            app:destination="@id/tvFragment" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.newmovieapp.favorite.FavoriteFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/fragment_favorite">
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+
 </navigation>

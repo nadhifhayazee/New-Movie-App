@@ -10,6 +10,7 @@ import com.example.newmovieapp.util.EspressoIdlingResource
 import javax.inject.Inject
 
 class RemoteDetailRepositoryImpl @Inject constructor(
+
     private val detailDataSource: RemoteDetailDataSource
 ) : DetailRepository {
     override fun getDetailMovie(movieId: String, language: String): LiveData<State<Movie>> =
